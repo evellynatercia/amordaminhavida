@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Evelly & Kauê - Nosso Amor</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff0f6;
+      color: #5a2a45;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    header {
+      background: #a83279;
+      color: white;
+      padding: 20px 10px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin: 5px 0 0;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    section {
+      margin-bottom: 40px;
+      background: #f7d6e0;
+      border-radius: 12px;
+      padding: 20px 25px;
+      box-shadow: 0 3px 8px rgba(168, 50, 121, 0.2);
+    }
+
+    section h2 {
+      color: #a83279;
+      margin-top: 0;
+      border-bottom: 2px solid #a83279;
+      padding-bottom: 8px;
+      font-size: 2rem;
+    }
+
+    #contador, #contadorProximo {
+      font-size: 1.6rem;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 10px;
+      color: #7a375b;
+    }
+
+    #contadorProximo {
+      font-size: 1.2rem;
+      margin-top: 8px;
+    }
+
+    .cartinha p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin: 15px 0;
+    }
+
+    .galeria {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .galeria img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(168, 50, 121, 0.3);
+      cursor: pointer;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .galeria img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 15px rgba(168, 50, 121, 0.5);
+    }
+
+    .galeria p {
+      text-align: center;
+      font-style: italic;
+      color: #7a375b;
+      font-size: 1rem;
+      flex-basis: 100%;
+    }
+
+    button.surpresa-btn {
+      display: block;
+      margin: 0 auto;
+      padding: 12px 25px;
+      background-color: #a83279;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(168, 50, 121, 0.4);
+      transition: background-color 0.3s ease;
+    }
+
+    button.surpresa-btn:hover {
+      background-color: #7a2357;
+    }
+
+    .surpresa-msg {
+      margin-top: 20px;
+      font-size: 1.4rem;
+      color: #7a375b;
+      font-style: italic;
+      text-align: center;
+      min-height: 60px;
+    }
+
+    iframe.spotify {
+      width: 100%;
+      height: 380px;
+      border: none;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px 10px;
+      background: #a83279;
+      color: white;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+
+    @media(max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      section h2 {
+        font-size: 1.6rem;
+      }
+
+      .cartinha p {
+        font-size: 1rem;
+      }
+
+      .galeria img {
+        width: 100px;
+        height: 100px;
+      }
+
+      iframe.spotify {
+        height: 320px;
+      }
+    }
+
+    #confetes-container {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .confete, .coracao {
+      position: absolute;
+      top: -20px;
+      width: 15px;
+      height: 15px;
+      opacity: 0.85;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      will-change: transform, opacity;
+    }
+
+    .confete {
+      background-color: #ff77a9;
+      border-radius: 3px;
+      animation-name: cairConfete;
+    }
+
+    .coracao {
+      width: 18px;
+      height: 18px;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="pink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation-name: cairCoracao;
+    }
+
+    @keyframes cairConfete {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
+    }
+
+    @keyframes cairCoracao {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.85; }
+      50% { transform: translateY(50vh) rotate(180deg) scale(1.1); opacity: 0.6; }
+      100% { transform: translateY(110vh) rotate(360deg) scale(1); opacity: 0; }
+    }
+
+    /* NOVO: estilos para os textos "EU TE AMO" flutuantes */
+    #amor-textos-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 9998; /* menos que os confetes para não esconder */
+    }
+
+    .amor-texto {
+      position: absolute;
+      color: rgba(255, 105, 180, 0.3);
+      font-weight: 900;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
+      white-space: nowrap;
+      animation-name: flutuarAmor;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes flutuarAmor {
+      0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
+      50%  { transform: translateY(-20px) translateX(10px) rotate(5deg); opacity: 0.5; }
+      100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
+    }
+/* Modal para mostrar a imagem ampliada */
+#modal-img {
+  display: none; 
+  position: fixed; 
+  z-index: 10000; 
+  left: 0;
+  top: 0;
+  width: 100vw; 
+  height: 100vh; 
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center; 
+  align-items: center;
+}
+
+#modal-img img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+#modal-close {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  font-size: 2.5rem;
+  color: white;
+  cursor: pointer;
+  z-index: 10001; /* acima do modal */
+  user-select: none;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-weight: bold;
+}
+#modal-close:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+
+  </style>
+</head>
+<body>
+<!-- Modal da imagem -->
+<div id="modal-img" onclick="fecharModal()">
+  <img id="modal-img-src" src="" alt="Imagem ampliada" />
+</div>
+<div id="confetes-container"></div>
+<div id="amor-textos-container"></div>
+<div id="modal" style="display:none">
+  <span id="modal-close">&times;</span>
+  <img id="modal-img-src" src="" alt="Imagem ampliada" />
+</div>
+<section id="contador-dias">
+  <h2>Contador de Dias Juntos</h2>
+  <div id="contador">2023.11.09</div>
+  <div id="contadorProximo">2025.1109</div>
+</section>
+
+
+
+<header>
+  <h1>Evelly & Kauê</h1>
+  <p>Desde 09/11/2023 — Um amor para sempre</p>
+</header>
+
+<main>
+  <section id="historia">
+    <h2>Nossa História</h2>
+    <p>
+ Foi graças a uma amiga querida que você entrou na minha vida, e nosso primeiro encontro aconteceu no  19 de janeiro de 2024, um dia que guardo com muito carinho no coração.
+ Antes disso, tivemos dois pedidos de namoro que marcaram o início da nossa história: o primeiro, pelo celular, no dia 09/11/2023, que me fez sorrir sozinha ao receber sua mensagem cheia de carinho e esperança. E o segundo, pessoalmente, naquele encontro tão especial em 19/01/2024, onde pude olhar nos seus olhos e sentir que tudo aquilo era real e verdadeiro.
+ Eu era muito tímida, com o coração acelerado, mas assim que recebi sua mensagem, algo dentro de mim já sabia que era você, aquela pessoa única que eu estava esperando.
+ Com o passar dos dias, o sentimento foi crescendo e se tornando mais forte, até que, um mês depois de começarmos a namorar, eu não consegui mais guardar para mim: contei para minha mãe sobre você, porque você já era alguém muito importante, um presente precioso que eu queria compartilhar com o mundo.
+ Desde então, cada dia ao seu lado tem sido uma nova descoberta, uma felicidade que transforma minha vida em algo ainda mais lindo.
+ E agora, olhando para tudo que vivemos, só posso dizer que valeu muito a pena ter esperado por você.EU TE AMO MUITO💖</p>
+  </section>
+
+  <section id="contador-dias">
+    <h2>Quantos dias juntos?</h2>
+    <div id="contador">juntinhos a 366 dias !</div>
+    
+  </section>
+
+  <section id="galeria ">
+    <h2>Nossas primeiras conversas</h2>
+    <div class="galeria">
+      <img src="eu.jpeg " alt="Foto minha" />
+      <img src="euteamo.jpeg" alt="Foto minha" />
+       <img src="suco.jpeg" alt="Foto minha" />
+
+      <p>melhores conversas da nossa vida!</p>
+    </div>
+  </section>
+
+  <section id="cartinha">
+    <h2>Minha Cartinha para Você</h2>
+    <div class="cartinha">
+      <p>Meu amor,</p>
+      <p>Eu comecei a gostar de você naquele momento especial em que recebi sua mensagem. Na hora, eu já sabia que era você, e isso me deixou feliz de um jeito que eu nunca tinha sentido antes.</p>
+      <p>Um mês depois de começarmos a namorar, eu até contei para a minha mãe, porque você já tinha se tornado alguém muito importante pra mim.</p>
+      <p>Cada dia com você é uma surpresa boa, cheia de carinho e descobertas. Obrigada por estar ao meu lado, por ser quem você é e por fazer meu coração sorrir.</p>
+      <p>Te amo muito,<br>Sua mulher💖</p>
+    </div>
+  </section>
+  <section id="galeria">
+    <h2>Galeria de Fotos</h2>
+    <div class="galeria">
+      <img src="19.jpeg" alt="Foto minha" />
+      <img src="azul.jpeg" alt="Foto minha" />
+      <img src="yan.jpeg" alt="Foto minha" />
+      <p>melhores momentos!</p>
+    </div>
+  </section>
+
+  <section id="playlist">
+    <h2>Playlist Romântica</h2>
+    <iframe
+      class="spotify"
+      src="https://open.spotify.com/embed/playlist/1AkaahnGYJi64iVcq1Eq73?utm_source=generator"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      title="Playlist Romântica Evelly & Kauê"
+    ></iframe>
+    <p style="font-size: 0.9rem; color: #7a375b; margin-top: 10px; text-align:center;">
+     Todas essas músicas contam um pouco da nossa história, mas elas são só o começo do que vivemos juntos.
+    </p>
+  </section>
+
+  <section id="surpresa">
+    <h2>Uma Surpresa pra Você</h2>
+    <button class="surpresa-btn" onclick="mostrarMensagem()">Clique aqui para uma mensagem especial 💌</button>
+    <div class="surpresa-msg" id="mensagemSurpresa"></div>
+  </section>
+</main>
+
+<footer>
+  Feito com ♥ para Evelly & Kauê
+</footer>
+
+<script>
+function formatarData(data) {
+  const ano = data.getFullYear();
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const dia = String(data.getDate()).padStart(2, '0');
+  return `${ano}.${mes}.${dia}`;
+}
+
+const dataInicio = new Date(2023, 10, 9); // 9 de novembro de 2023
+
+function atualizarContador() {
+  const hoje = new Date();
+  const diff = hoje - dataInicio;
+  if (diff < 0) {
+    document.getElementById('contador').textContent = "Ainda não começamos!";
+  } else {
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    document.getElementById('contador').textContent = `Estamos juntos há ${dias} dias!`;
+  }
+  document.getElementById('contadorProximo').textContent = `Data de início: ${formatarData(dataInicio)}`;
+}
+
+atualizarContador();
+setInterval(atualizarContador, 1000 * 60 * 60);
+
+
+
+
+
+function mostrarMensagem() {
+  const mensagens = [
+    `Você é a melhor coisa que aconteceu na minha vida, meu porto seguro e minha alegria. Eu te amo profundamente, e cada instante ao seu lado é uma eternidade de felicidade. Quero casar com você, construir nosso lar com a Moana e o Lorenzo, onde o amor será a nossa base e a cumplicidade, nossa essência. Juntos, vamos escrever uma história que o tempo jamais poderá apagar.` ];
+
+  const elementoMsg = document.getElementById('mensagemSurpresa');
+  const mensagem = mensagens[Math.floor(Math.random() * mensagens.length)];
+
+  elementoMsg.textContent = mensagem;
+  elementoMsg.style.display = 'block';
+
+  // Força reflow para ativar a transição CSS
+  void elementoMsg.offsetWidth;
+
+  elementoMsg.style.opacity = '1';
+
+  setTimeout(() => {
+    elementoMsg.style.opacity = '0';
+    setTimeout(() => {
+      elementoMsg.style.display = 'none';
+      elementoMsg.textContent = '';
+    }, 500);
+  }, 8000); // mostra por 8 segundos
+}
+
+  
+  // Confetes e corações caindo (do seu código original)
+  const confetesContainer = document.getElementById('confetes-container');
+
+  function criarConfete() {
+    const confete = document.createElement('div');
+    confete.classList.add(Math.random() > 0.5 ? 'confete' : 'coracao');
+    confete.style.left = Math.random() * 100 + 'vw';
+    confete.style.animationDuration = (4 + Math.random() * 6) + 's';
+    confete.style.opacity = 0.8 + Math.random() * 0.2;
+    confetesContainer.appendChild(confete);
+
+    setTimeout(() => {
+      confete.remove();
+    }, 10000);
+  }
+
+  setInterval(criarConfete, 400);
+
+  // NOVO: criar vários textos "EU TE AMO" flutuando no fundo
+  function criarAmorTextos() {
+    const container = document.getElementById('amor-textos-container');
+    const totalTextos = 15;
+
+    for (let i = 0; i < totalTextos; i++) {
+      const texto = document.createElement('div');
+      texto.classList.add('amor-texto');
+      texto.textContent = 'EU TE AMO';
+
+      // posição aleatória
+      texto.style.top = Math.random() * 100 + 'vh';
+      texto.style.left = Math.random() * 100 + 'vw';
+
+      // tamanho aleatório entre 20 e 60px
+      const tamanho = 20 + Math.random() * 40;
+      texto.style.fontSize = tamanho + 'px';
+
+      // duração e atraso da animação aleatórios para movimentos não sincronizados
+      const duracao = 5 + Math.random() * 5;
+      texto.style.animationDuration = duracao + 's';
+      texto.style.animationDelay = (Math.random() * 5) + 's';
+
+      container.appendChild(texto);
+    }
+  }
+
+  criarAmorTextos();
+
+  const modal = document.getElementById('modal-img');
+  const modalImg = document.getElementById('modal-img-src');
+  const imagens = document.querySelectorAll('.galeria img');
+
+  imagens.forEach(img => {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', () => {
+      modal.style.display = 'flex';
+      modalImg.src = img.src;
+      modalImg.alt = img.alt || 'Imagem ampliada';
+    });
+  });
+
+  function fecharModal() {
+    modal.style.display = 'none';
+    modalImg.src = '';
+  }
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('modal').style.display = 'none';
+});
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
+
